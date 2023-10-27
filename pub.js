@@ -16,14 +16,14 @@ function formatMessage(user, message) {
   return `[${actualTime}] [${user}]: ${message}`;
 }
 
-function sendMessage() {
-  rl.question('Digite seu nome de usuário: ', (user) => {
-    rl.question('Digite a mensagem: ', (message) => {
-      const formattedMessage = formatMessage(user, message);
-      client.publish('chat', formattedMessage);
-      rl.close();
-    });
+function sendMessage(user) {
+  rl.question('Digite a mensagem: ', (message) => {
+    const formattedMessage = formatMessage(user, message);
+    client.publish('chat', formattedMessage);
+    sendMessage(user);
   });
 }
 
-sendMessage();
+rl.question('Digite seu nome de usuário: ', (user) => {
+  sendMessage(user);
+});
